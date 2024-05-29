@@ -31,11 +31,11 @@ def main():
     def on_press_exit(key):
         if key == keyboard.Key.esc:
             listener.stop()
-            GUIManager.number_window.quit()
+            GUIManager.root.quit()
             return False
 
     with keyboard.Listener(on_press=on_press_exit) as exit_listener:
-        GUIManager.number_window.mainloop()
+        GUIManager.root.mainloop()
         exit_listener
 
 if __name__ == "__main__":

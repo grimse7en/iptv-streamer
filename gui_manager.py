@@ -5,14 +5,17 @@ class GUIManager:
     @staticmethod
     def initialize(player):
         GUIManager.player = player
-        GUIManager.number_window = tk.Tk()
+        GUIManager.root = tk.Tk()
+        GUIManager.root.withdraw()  # Hide the root window
+
+        GUIManager.number_window = tk.Toplevel(GUIManager.root)
         GUIManager.number_window.attributes("-topmost", True)
         GUIManager.number_window.overrideredirect(True)
 
         screen_width = GUIManager.number_window.winfo_screenwidth()
         screen_height = GUIManager.number_window.winfo_screenheight()
 
-        GUIManager.loading_window = tk.Toplevel(GUIManager.number_window)
+        GUIManager.loading_window = tk.Toplevel(GUIManager.root)
         GUIManager.loading_window.attributes("-topmost", True)
         GUIManager.loading_window.overrideredirect(True)
         GUIManager.loading_label = tk.Label(GUIManager.loading_window, text="Loading", font=config.LOADING_FONT, fg=config.TEXT_COLOR, bg=config.BG_COLOR)
@@ -20,7 +23,7 @@ class GUIManager:
         GUIManager.loading_window.geometry(f"+{screen_width//2 - 50}+{screen_height//2 - 20}")
         GUIManager.loading_window.withdraw()
 
-        GUIManager.channel_info_window = tk.Toplevel(GUIManager.number_window)
+        GUIManager.channel_info_window = tk.Toplevel(GUIManager.root)
         GUIManager.channel_info_window.attributes("-topmost", True)
         GUIManager.channel_info_window.overrideredirect(True)
         GUIManager.channel_info_label = tk.Label(GUIManager.channel_info_window, text="", font=config.CHANNEL_INFO_FONT, fg=config.TEXT_COLOR, bg=config.BG_COLOR)
