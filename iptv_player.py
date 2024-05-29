@@ -23,7 +23,8 @@ class IPTVPlayer:
     def handle_playback_time(self, name, value):
         if value is not None and value > 0.0 and not self.playback_time_printed:
             print(f"playback-time: {value}")
-            GUIManager.loading_window.withdraw()
+            GUIManager.hide_loading()
+            GUIManager.show_channel_info(self.current_index, self.urls[self.current_index]['name'])
             self.playback_time_printed = True
 
     def play_url(self, index):
@@ -44,6 +45,7 @@ class IPTVPlayer:
                     print(f"Key {index} pressed")
                     GUIManager.update_label(self.input_buffer)
                     self.play_url(index)
+                    self.current_index = index
             except ValueError:
                 print("Invalid input buffer")
         self.input_buffer = ""

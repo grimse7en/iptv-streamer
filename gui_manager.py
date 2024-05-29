@@ -20,6 +20,14 @@ class GUIManager:
         GUIManager.loading_window.geometry(f"+{screen_width//2 - 50}+{screen_height//2 - 20}")
         GUIManager.loading_window.withdraw()
 
+        GUIManager.channel_info_window = tk.Toplevel(GUIManager.number_window)
+        GUIManager.channel_info_window.attributes("-topmost", True)
+        GUIManager.channel_info_window.overrideredirect(True)
+        GUIManager.channel_info_label = tk.Label(GUIManager.channel_info_window, text="", font=config.CHANNEL_INFO_FONT, fg=config.TEXT_COLOR, bg=config.BG_COLOR)
+        GUIManager.channel_info_label.pack(expand=True)
+        GUIManager.channel_info_window.geometry(f"+0+{screen_height - 100}")
+        GUIManager.channel_info_window.withdraw()
+
         GUIManager.loading_animations = config.LOADING_ANIMATIONS
         GUIManager.loading_index = 0
 
@@ -47,6 +55,20 @@ class GUIManager:
     @staticmethod
     def show_loading():
         GUIManager.loading_window.deiconify()
+
+    @staticmethod
+    def hide_loading():
+        GUIManager.loading_window.withdraw()
+
+    @staticmethod
+    def show_channel_info(index, name):
+        GUIManager.channel_info_label.config(text=f"Channel {index}: {name}")
+        GUIManager.channel_info_window.deiconify()
+        GUIManager.channel_info_window.after(config.CHANNEL_INFO_DISPLAY_DURATION, GUIManager.hide_channel_info)
+
+    @staticmethod
+    def hide_channel_info():
+        GUIManager.channel_info_window.withdraw()
 
     @staticmethod
     def show_number_window():
