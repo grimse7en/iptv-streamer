@@ -17,7 +17,9 @@ def main():
         return
 
     player = IPTVPlayer(urls)
-    GUIManager.initialize(player)
+    gui_manager = GUIManager(player)
+
+    player.gui_manager = gui_manager  # Pass the GUI manager to the player
 
     # Play the default stream and update the current stream index
     player.play_url(config.DEFAULT_STREAM_INDEX)
@@ -31,11 +33,11 @@ def main():
     def on_press_exit(key):
         if key == keyboard.Key.esc:
             listener.stop()
-            GUIManager.root.quit()
+            gui_manager.root.quit()
             return False
 
     with keyboard.Listener(on_press=on_press_exit) as exit_listener:
-        GUIManager.root.mainloop()
+        gui_manager.root.mainloop()
         exit_listener
 
 if __name__ == "__main__":

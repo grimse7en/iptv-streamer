@@ -1,6 +1,5 @@
 import mpv
 from threading import Timer
-from gui_manager import GUIManager
 import config
 
 class IPTVPlayer:
@@ -23,8 +22,8 @@ class IPTVPlayer:
     def handle_playback_time(self, name, value):
         if value is not None and value > 0.0 and not self.playback_time_printed:
             print(f"playback-time: {value}")
-            GUIManager.hide_loading()
-            GUIManager.show_channel_info(self.current_index, self.urls[self.current_index]['name'])
+            self.gui_manager.hide_loading()
+            self.gui_manager.show_channel_info(self.current_index, self.urls[self.current_index]['name'])
             self.playback_time_printed = True
 
     def play_url(self, index):
@@ -33,7 +32,7 @@ class IPTVPlayer:
             print(f"URL for {self.urls[index]['name']} is empty. Skipping.")
             return
         print(f"Playing {self.urls[index]['name']} - {url}")
-        GUIManager.show_loading()
+        self.gui_manager.show_loading()
         self.playback_time_printed = False
         self.player.play(url)
 
@@ -43,7 +42,7 @@ class IPTVPlayer:
                 index = int(self.input_buffer)
                 if 0 <= index < len(self.urls):
                     print(f"Key {index} pressed")
-                    GUIManager.update_label(self.input_buffer)
+                    self.gui_manager.update_label(self.input_buffer)
                     self.play_url(index)
                     self.current_index = index
             except ValueError:
@@ -52,7 +51,7 @@ class IPTVPlayer:
         if self.timer:
             self.timer.cancel()
             self.timer = None
-        GUIManager.hide_number_window()
+        self.gui_manager.hide_number_window()
 
     def on_press(self, key):
         try:
@@ -61,8 +60,8 @@ class IPTVPlayer:
                     if self.timer:
                         self.timer.cancel()
                     self.input_buffer += key.char
-                    GUIManager.update_label(self.input_buffer)
-                    GUIManager.show_number_window()
+                    self.gui_manager.update_label(self.input_buffer)
+                    self.gui_manager.show_number_window()
                     self.timer = Timer(config.INPUT_RESET_TIMEOUT, self.reset_input_buffer)
                     self.timer.start()
         except AttributeError:
