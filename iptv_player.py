@@ -42,7 +42,7 @@ class IPTVPlayer:
                 index = int(self.input_buffer)
                 if 0 <= index < len(self.urls):
                     print(f"Key {index} pressed")
-                    self.gui_manager.update_label(self.input_buffer)
+                    self.gui_manager.update_number_window_label(self.input_buffer)
                     self.play_url(index)
                     self.current_index = index
             except ValueError:
@@ -60,7 +60,7 @@ class IPTVPlayer:
                     if self.timer:
                         self.timer.cancel()
                     self.input_buffer += key.char
-                    self.gui_manager.update_label(self.input_buffer)
+                    self.gui_manager.update_number_window_label(self.input_buffer)
                     self.gui_manager.show_number_window()
                     self.timer = Timer(config.INPUT_RESET_TIMEOUT, self.reset_input_buffer)
                     self.timer.start()

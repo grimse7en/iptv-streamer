@@ -74,5 +74,5 @@ class GUIManager:
     def hide_number_window(self):
         self.number_window.withdraw()
 
-    def update_label(self, text):
+    def update_number_window_label(self, text):
         self.label.config(text=text)
