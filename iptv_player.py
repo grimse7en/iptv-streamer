@@ -28,6 +28,9 @@ class IPTVPlayer:
 
     def play_url(self, index):
         url = self.urls[index]['url']
+        if not url.strip():  # Check if the URL is empty or contains only whitespace
+            print(f"URL for {self.urls[index]['name']} is empty. Skipping.")
+            return
         print(f"Playing {self.urls[index]['name']} - {url}")
         GUIManager.show_loading()
         self.playback_time_printed = False
