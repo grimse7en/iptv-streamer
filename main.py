@@ -2,6 +2,7 @@ import json
 from pynput import keyboard
 from iptv_player import IPTVPlayer
 from gui_manager import GUIManager
+import config
 
 def main():
     try:
@@ -17,6 +18,10 @@ def main():
 
     player = IPTVPlayer(urls)
     GUIManager.initialize(player)
+
+    # Play the default stream and update the current stream index
+    player.play_url(config.DEFAULT_STREAM_INDEX)
+    player.current_index = config.DEFAULT_STREAM_INDEX
 
     listener = keyboard.Listener(on_press=player.on_press)
     listener.start()
