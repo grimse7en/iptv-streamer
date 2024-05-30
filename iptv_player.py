@@ -18,17 +18,20 @@ class IPTVPlayer:
         )
         
         self.player.observe_property("playback-time", self.handle_playback_time)
-        
+
+    def set_gui_manager(self, gui_manager):
+        self.gui_manager = gui_manager
+
     def handle_playback_time(self, name, value):
         if value is not None and value > 0.0 and not self.playback_time_printed:
-            print(f"playback-time: {value}")
+            print(f"Playback time: {value}")
             self.gui_manager.hide_loading()
             self.gui_manager.show_channel_info(self.current_index, self.urls[self.current_index]['name'])
             self.playback_time_printed = True
 
     def play_url(self, index):
         url = self.urls[index]['url']
-        if not url.strip():  # Check if the URL is empty or contains only whitespace
+        if not url.strip():
             print(f"URL for {self.urls[index]['name']} is empty. Skipping.")
             return
         print(f"Playing {self.urls[index]['name']} - {url}")
@@ -53,7 +56,7 @@ class IPTVPlayer:
             self.timer = None
         self.gui_manager.hide_number_window()
 
-    def on_press(self, key):
+    def on_key_press(self, key):
         try:
             if key.char.isdigit():
                 if len(self.input_buffer) < config.INPUT_BUFFER_MAX_LENGTH:
