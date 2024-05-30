@@ -65,6 +65,7 @@ class GUIManager:
         self.channel_info_window = tk.Toplevel(self.root)
         self.channel_info_window.attributes("-topmost", True)
         self.channel_info_window.overrideredirect(True)
+        self.channel_info_window.configure(bg=config.BG_COLOR)
 
         screen_width = self.channel_info_window.winfo_screenwidth()
         screen_height = self.channel_info_window.winfo_screenheight()
@@ -73,7 +74,7 @@ class GUIManager:
         self.channel_info_window.geometry(f"+{int(screen_width * channel_info_x_ratio)}+{int(screen_height * channel_info_y_ratio)}")
 
         self.channel_info_label = tk.Label(self.channel_info_window, text="", font=config.CHANNEL_INFO_FONT, fg=config.TEXT_COLOR, bg=config.BG_COLOR)
-        self.channel_info_label.pack(expand=True)
+        self.channel_info_label.pack(expand=True, padx=20, pady=15)
         self.channel_info_window.withdraw()
 
     def update_loading_animation(self):
@@ -92,7 +93,7 @@ class GUIManager:
 
     def show_channel_info(self, index, name):
         """Shows the channel information window."""
-        self.channel_info_label.config(text=f"Channel {index}: {name}")
+        self.channel_info_label.config(text=f"{index}.   {name}")
         self.channel_info_window.deiconify()
         self.channel_info_window.after(config.CHANNEL_INFO_DISPLAY_DURATION, self.hide_channel_info)
 

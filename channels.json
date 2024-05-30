@@ -11,6 +11,6 @@
     {"name": "Channel 8", "url": "", "index": 8},
     {"name": "Channel 9", "url": "", "index": 9},
     {"name": "Video Calabria", "url": "https://streamcdne1-a8a02dd9a49a4fc9810743615c65ab73.msvdn.net/live/S76734991/i6NeNqLYaspb/playlist.m3u8", "index": 10},
-    {"name": "RAI News 24", "url": "", "index": 11}
+    {"name": "RAI News 24", "url": "https://streamcdne3-8e7439fdb1694c8da3a0fd63e4dda518.msvdn.net/rainews1/hls/rainews_2400/chunklist.m3u8", "index": 11}
   ]
 }
