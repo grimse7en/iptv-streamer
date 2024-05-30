@@ -4,11 +4,11 @@ from iptv_player import IPTVPlayer
 from gui_manager import GUIManager
 import config
 
-def load_urls(file_path):
+def load_channels(file_path):
     try:
         with open(file_path, 'r') as file:
             data = json.load(file)
-            return data['urls']
+            return data['channels']
     except FileNotFoundError:
         print(f"The file '{file_path}' was not found.")
     except json.JSONDecodeError:
@@ -29,16 +29,12 @@ def setup_listeners(player, gui_manager):
     exit_listener.start()
 
 def main():
-    urls = load_urls('urls.json')
-    if not urls:
+    channels = load_channels('channels.json')
+    if not channels:
         return
 
-    player = IPTVPlayer(urls)
-    gui_manager = GUIManager(player)
-    player.set_gui_manager(gui_manager)
-
-    player.play_url(config.DEFAULT_STREAM_INDEX)
-    player.current_index = config.DEFAULT_STREAM_INDEX
+    gui_manager = GUIManager()
+    player = IPTVPlayer(channels, gui_manager)
 
     setup_listeners(player, gui_manager)
 
