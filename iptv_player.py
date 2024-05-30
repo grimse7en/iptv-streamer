@@ -1,5 +1,4 @@
 import mpv
-from threading import Timer
 import config
 
 class IPTVPlayer:
@@ -7,8 +6,6 @@ class IPTVPlayer:
         self.channels = channels
         self.gui_manager = gui_manager
         self.current_channel_index = config.DEFAULT_CHANNEL_INDEX
-        self.input_buffer = ""
-        self.timer = None
         self.playback_time_printed = False
 
         self.mpv = mpv.MPV(
@@ -37,34 +34,3 @@ class IPTVPlayer:
         self.gui_manager.show_loading()
         self.playback_time_printed = False
         self.mpv.play(url)
-
-    def reset_input_buffer(self):
-        if self.input_buffer:
-            try:
-                index = int(self.input_buffer)
-                if 0 <= index < len(self.channels):
-                    print(f"Key {index} pressed")
-                    self.gui_manager.update_number_window_label(self.input_buffer)
-                    self.play_channel(index)
-                    self.current_channel_index = index
-            except ValueError:
-                print("Invalid input buffer")
-        self.input_buffer = ""
-        if self.timer:
-            self.timer.cancel()
-            self.timer = None
-        self.gui_manager.hide_number_window()
-
-    def on_key_press(self, key):
-        try:
-            if key.char.isdigit():
-                if len(self.input_buffer) < config.INPUT_BUFFER_MAX_LENGTH:
-                    if self.timer:
-                        self.timer.cancel()
-                    self.input_buffer += key.char
-                    self.gui_manager.update_number_window_label(self.input_buffer)
-                    self.gui_manager.show_number_window()
-                    self.timer = Timer(config.INPUT_RESET_TIMEOUT, self.reset_input_buffer)
-                    self.timer.start()
-        except AttributeError:
-            pass

@@ -1,7 +1,7 @@
 import json
-from pynput import keyboard
 from iptv_player import IPTVPlayer
 from gui_manager import GUIManager
+from input_manager import InputManager
 import config
 
 def load_channels(file_path):
@@ -15,19 +15,6 @@ def load_channels(file_path):
         print("Error decoding the JSON file.")
     return []
 
-def setup_listeners(player, gui_manager):
-    listener = keyboard.Listener(on_press=player.on_key_press)
-    listener.start()
-
-    def on_exit_key_press(key):
-        if key == keyboard.Key.esc:
-            listener.stop()
-            gui_manager.root.quit()
-            return False
-
-    exit_listener = keyboard.Listener(on_press=on_exit_key_press)
-    exit_listener.start()
-
 def main():
     channels = load_channels('channels.json')
     if not channels:
@@ -35,8 +22,7 @@ def main():
 
     gui_manager = GUIManager()
     player = IPTVPlayer(channels, gui_manager)
-
-    setup_listeners(player, gui_manager)
+    input_manager = InputManager(player, gui_manager)
 
     print("Press keys 0-9 to switch channels. Press 'esc' to exit.")
     gui_manager.run()
