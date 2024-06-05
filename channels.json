@@ -1,10 +1,10 @@
 {
   "channels": [
     {"name": "Musica Italiana", "url": "local_videos", "index": 0, "is_local": true, "path": "/home/melo/Videos/italian/"},
-    {"name": "La7", "url": "https://d15umi5iaezxgx.cloudfront.net/LA7/CLN/HLS-B/Live_1280x720_.m3u8", "index": 1},
+    {"name": "Musica Spagnola", "url": "local_videos", "index": 1, "is_local": true, "path": "/home/melo/Videos/spanish/"},
     {"name": "TV2000", "url": "https://hls-live-tv2000.akamaized.net/hls/live/2028510/tv2000/hls_1_1500/chunklist.m3u8", "index": 2},
     {"name": "LA Calabria TV", "url": "https://f5842579ff984c1c98d63b8d789673eb.msvdn.net/live/S47282891/JWjL3xqPf4bX/chunklist_b1364000.m3u8", "index": 3},
-    {"name": "Channel 4", "url": "", "index": 4},
+    {"name": "La7", "url": "https://d15umi5iaezxgx.cloudfront.net/LA7/CLN/HLS-B/Live_1280x720_.m3u8", "index": 4},
     {"name": "Channel 5", "url": "", "index": 5},
     {"name": "Channel 6", "url": "", "index": 6},
     {"name": "Channel 7", "url": "", "index": 7},

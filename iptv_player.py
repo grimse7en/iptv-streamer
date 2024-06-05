@@ -55,6 +55,7 @@ class IPTVPlayer:
         if index == 0:
             # Special case for channel 0
             self.play_italian_music_videos(self.channels[index].get('path', ''))
+            self.gui_manager.show_channel_info(index, self.channels[index].get('name', ''))
             return
 
         url = self.channels[index]['url']
