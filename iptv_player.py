@@ -18,7 +18,7 @@ class IPTVPlayer:
         )
         
         self.mpv.observe_property("playback-time", self.handle_playback_time)
-        self.mpv.observe_property("playlist-pos", self.handle_playlist_pos)
+        self.mpv.observe_property("playlist-pos", self.eof_replay)
         self.play_channel(self.current_channel_index)
 
     def handle_playback_time(self, name, value):
@@ -28,37 +28,35 @@ class IPTVPlayer:
             self.gui_manager.show_channel_info(self.current_channel_index, self.channels[self.current_channel_index]['name'])
             self.playback_time_printed = True
 
-    def handle_playlist_pos(self, name, value):
-        if value == -1 and self.current_channel_index == 0: # if finished playing local files on channel 0
+    def eof_replay(self, name, value):
+        playlist_pos = value
+        if playlist_pos == -1 and self.current_channel_index in (0, 1, 6): # if end of playlist and on local channel
             print(f"End of playlist")
-            self.play_italian_music_videos(self.channels[0].get('path', ''))
-        #print(f"Current position in playlist: {value}")
-        #print(f"Current channel index {self.current_channel_index}")
+            self.play_local_files(self.channels[self.current_channel_index].get('path', ''))
 
-    def play_italian_music_videos(self, path):
-        # Special case for channel 0
+    def play_local_files(self, path):
         if path and os.path.isdir(path):
             files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
             random.shuffle(files)  # Shuffle the list of files
-            print("Files in channel 0 path (randomized order):", files)
             self.mpv.command('stop')  # Stop the current playback
             self.mpv.playlist_clear()  # Clear the playlist before adding new items
             for file in files:
                 file_path = os.path.join(path, file)
-                print(f"Adding file to playlist: {file_path}")
+                #print(f"Adding file to playlist: {file_path}")
                 self.mpv.playlist_append(file_path)  # Add each file to the playlist
             self.mpv.playlist_pos = 0  # Set the playlist position to start playing from the first file
         else:
-            print("Invalid path for channel 0.")
+            print("Invalid path.")
 
     def play_channel(self, index):
-        if index == 0:
-            # Special case for channel 0
-            self.play_italian_music_videos(self.channels[index].get('path', ''))
+        url = self.channels[index]['url']
+        if url == 'local': # If local channel
+            self.play_local_files(self.channels[index].get('path', ''))
             self.gui_manager.show_channel_info(index, self.channels[index].get('name', ''))
+            self.current_channel_index = index
+            print(f"Index: {self.current_channel_index}")
             return
 
-        url = self.channels[index]['url']
         if not url.strip():
             print(f"URL for {self.channels[index]['name']} is empty. Skipping.")
             return
@@ -67,3 +65,5 @@ class IPTVPlayer:
         self.gui_manager.show_loading()
         self.playback_time_printed = False
         self.mpv.play(url)
+        self.current_channel_index = index
+        print(f"Index: {self.current_channel_index}")
