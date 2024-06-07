@@ -6,7 +6,7 @@
     {"name": "LA Calabria TV", "url": "https://f5842579ff984c1c98d63b8d789673eb.msvdn.net/live/S47282891/JWjL3xqPf4bX/chunklist_b1364000.m3u8", "index": 3},
     {"name": "La7", "url": "https://d15umi5iaezxgx.cloudfront.net/LA7/CLN/HLS-B/Live_1280x720_.m3u8", "index": 4},
     {"name": "Channel 5", "url": "", "index": 5},
-    {"name": "CalabriaTV", "url": "local", "index": 6, "is_local": true, "path": "/home/melo/Videos/italian/"},
+    {"name": "CalabriaTV", "url": "local", "index": 6, "is_local": true, "path": "/home/melo/Videos/calabriatv/"},
     {"name": "Channel 7", "url": "", "index": 7},
     {"name": "Channel 8", "url": "", "index": 8},
     {"name": "Channel 9", "url": "", "index": 9},
