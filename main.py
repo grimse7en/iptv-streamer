@@ -22,6 +22,7 @@ def main():
 
     gui_manager = GUIManager()
     player = IPTVPlayer(channels, gui_manager)
+    player.play_channel(config.DEFAULT_CHANNEL_INDEX)
     input_manager = InputManager(player, gui_manager)
 
     print("Press keys 0-9 to switch channels. Press 'esc' to exit.")

@@ -7,7 +7,8 @@ class IPTVPlayer:
     def __init__(self, channels, gui_manager):
         self.channels = channels
         self.gui_manager = gui_manager
-        self.current_channel_index = config.DEFAULT_CHANNEL_INDEX
+        self.current_channel_index = None
+        self.previous_channel_index = None
         self.playback_time_printed = False
 
         self.mpv = mpv.MPV(
@@ -19,7 +20,6 @@ class IPTVPlayer:
         
         self.mpv.observe_property("playback-time", self.handle_playback_time)
         self.mpv.observe_property("playlist-pos", self.eof_replay)
-        self.play_channel(self.current_channel_index)
 
     def handle_playback_time(self, name, value):
         if value is not None and value > 0.0 and not self.playback_time_printed:
@@ -30,8 +30,8 @@ class IPTVPlayer:
 
     def eof_replay(self, name, value):
         playlist_pos = value
-        if playlist_pos == -1 and self.current_channel_index in (0, 1, 6): # if end of playlist and on local channel
-            print(f"End of playlist")
+        if playlist_pos == -1 and self.current_channel_index in (0, 1, 6): # if empty and on local channel
+            print(f"Populating playlist")
             self.play_local_files(self.channels[self.current_channel_index].get('path', ''))
 
     def play_local_files(self, path):
@@ -50,20 +50,26 @@ class IPTVPlayer:
 
     def play_channel(self, index):
         url = self.channels[index]['url']
-        if url == 'local': # If local channel
-            self.play_local_files(self.channels[index].get('path', ''))
-            self.gui_manager.show_channel_info(index, self.channels[index].get('name', ''))
-            self.current_channel_index = index
-            print(f"Index: {self.current_channel_index}")
-            return
-
         if not url.strip():
             print(f"URL for {self.channels[index]['name']} is empty. Skipping.")
             return
 
-        print(f"Playing {self.channels[index]['name']} - {url}")
+        self.current_channel_index = index
+
+        # Print channel change information
+        if self.previous_channel_index is not None:
+            print(f"Changed from {self.previous_channel_index} to {self.current_channel_index}")
+        
+        if url == 'local': # If local channel
+            self.play_local_files(self.channels[index].get('path', ''))
+            self.gui_manager.show_channel_info(index, self.channels[index].get('name', ''))
+            self.previous_channel_index = self.current_channel_index
+            #print(f"Index: {self.current_channel_index}")
+            return        
+
+        #print(f"Playing {self.channels[index]['name']} - {url}")
         self.gui_manager.show_loading()
         self.playback_time_printed = False
         self.mpv.play(url)
-        self.current_channel_index = index
-        print(f"Index: {self.current_channel_index}")
+        self.previous_channel_index = self.current_channel_index
+        #print(f"Index: {self.current_channel_index}")
