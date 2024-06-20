@@ -1,3 +1,4 @@
+from m3u8_handler import create_m3u8, trim_m3u8
 import mpv
 import config
 import random
@@ -57,10 +58,8 @@ class IPTVPlayer:
         if self.previous_channel_index is not None:
             print(f"Changed from {self.previous_channel_index} to {self.current_channel_index}")
             if self.channels[self.previous_channel_index]['url'].startswith('file'): # if previous channel is local
-                # TODO save position in .m3u8
                 print(self.current_filepath)
-                # trim .m3u8 at point that should be resumed for later
-                z = 0
+                trim_m3u8("/home/melo/Videos/italian/videos.m3u8", self.current_filepath)
 
         #print(f"Playing {self.channels[index]['name']} - {url}")
         self.gui_manager.show_loading()

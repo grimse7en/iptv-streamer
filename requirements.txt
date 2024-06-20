@@ -1,4 +1,5 @@
 evdev==1.7.1
+m3u8==5.0.0
 mpv==1.0.6
 pynput==1.7.7
 python-xlib==0.33
