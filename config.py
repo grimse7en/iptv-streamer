@@ -16,3 +16,4 @@ CHANNEL_INFO_DISPLAY_DURATION = 5000  # milliseconds
 CHANNEL_DIRECTORIES = {
     0: "/home/melo/Videos/italian"
 }
+MPV_TIMESTAMP_FILENAME = "mpv-timestamp.txt"

@@ -35,6 +35,7 @@ def create_m3u8(videos_directory):
         f.write(m3u8_content)
     
     print(f"Created m3u8 playlist at {m3u8_path}")
+    return m3u8_path
 
 def trim_m3u8(m3u8_path, entry_path):
     # Load the existing m3u8 file

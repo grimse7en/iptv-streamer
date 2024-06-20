@@ -1,4 +1,5 @@
 from m3u8_handler import create_m3u8, trim_m3u8
+import os
 import mpv
 import config
 
@@ -35,10 +36,12 @@ class IPTVPlayer:
         playlist_pos = value
         if playlist_pos == -1 and self.channels[self.current_channel_index]['url'].startswith('file'): # if local channel playlist is empty
             # TODO re-create .m3u8
-            create_m3u8(config.CHANNEL_DIRECTORIES.get(self.current_channel_index))
+            m3u8_path = create_m3u8(config.CHANNEL_DIRECTORIES.get(self.current_channel_index))
+            self.current_filepath = m3u8_path
             self.play_channel(self.current_channel_index)
 
     def on_path_change(self, name, value):
+        print("PATH CHANGE!")
         if name == 'path':
             self.current_filepath = value
 
@@ -48,19 +51,28 @@ class IPTVPlayer:
             print(f"URL for {self.channels[channel_index]['name']} is empty. Skipping.")
             return
         
-        # Resume local channel position
-        #if url.startswith('file'):
-            # TODO resume from timestamp
-
         # Save local channel place in playlist
         if self.current_channel_index is not None:
             if self.channels[self.current_channel_index]['url'].startswith('file'): # if currently playing channel is local
-                directory = config.CHANNEL_DIRECTORIES.get(self.current_channel_index)
-                trim_m3u8(f"{directory}/playlist.m3u8", self.current_filepath)
+                channel_directory = config.CHANNEL_DIRECTORIES.get(self.current_channel_index)
+                m3u8_path = f"{channel_directory}/playlist.m3u8"
+                if os.path.exists(m3u8_path) and m3u8_path != self.current_filepath:
+                    trim_m3u8(m3u8_path, self.current_filepath)
+                    print("TRIMMED")
+                    # TODO save timestamp as filename "mpvtimestamp-{timestamp}" and truncate the timestamp float as an integer
+
+                    # Get the current timestamp from mpv
+                    current_timestamp = int(self.mpv.time_pos)
+                    timestamp_filename = config.MPV_TIMESTAMP_FILENAME
+                    timestamp_filepath = os.path.join(channel_directory, timestamp_filename)
+
+                    # Save the timestamp to file
+                    with open(timestamp_filepath, 'w') as f:
+                        f.write(str(current_timestamp))
+                    print(f"Timestamp saved to {timestamp_filepath}")
 
         self.gui_manager.show_loading()
         self.playback_time_printed = False
         self.mpv.play(url)
         print(f"Changed from {self.current_channel_index} to {channel_index}")
         self.current_channel_index = channel_index
-        

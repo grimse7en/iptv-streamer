@@ -23,7 +23,7 @@ class InputManager:
                     print(f"Key {index} pressed")
                     self.gui_manager.update_number_window_label(self.input_buffer)
                     self.player.play_channel(index)
-                    self.player.current_channel_index = index
+                    #self.player.current_channel_index = index
             except ValueError:
                 print("Invalid input buffer")
         self.input_buffer = ""
