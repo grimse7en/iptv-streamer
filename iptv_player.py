@@ -9,6 +9,7 @@ class IPTVPlayer:
         self.gui_manager = gui_manager
         self.current_channel_index = None
         self.previous_channel_index = None
+        self.current_filepath = ""
         self.playback_time_printed = False
 
         self.mpv = mpv.MPV(
@@ -20,6 +21,7 @@ class IPTVPlayer:
         
         self.mpv.observe_property("playback-time", self.handle_playback_time)
         self.mpv.observe_property("playlist-pos", self.eof_replay)
+        self.mpv.observe_property('path', self.on_path_change)
 
     def handle_playback_time(self, name, value):
         if value is not None and value > 0.0 and not self.playback_time_printed:
@@ -33,6 +35,10 @@ class IPTVPlayer:
         if playlist_pos == -1 and self.current_channel_index in (0, 1, 6): # if empty and on local channel
             print(f"EMPTY LOCAL")
 
+    def on_path_change(self, name, value):
+        if name == 'path':
+            self.current_filepath = value
+
     def play_channel(self, index):
         url = self.channels[index]['url']
         if not url.strip():
@@ -43,17 +49,18 @@ class IPTVPlayer:
 
 
         # Resume local channel position
-        #if url.startswith('file'):
+        if url.startswith('file'):
             # TODO resume playlist position in .m3u8
+            x = 0
 
         # Save local channel place in playlist
-        #if self.previous_channel_index is not None:
-            #print(f"Changed from {self.previous_channel_index} to {self.current_channel_index}")
-            #if self.channels[self.previous_channel_index]['url'].startswith('file'): # if previous channel is local
+        if self.previous_channel_index is not None:
+            print(f"Changed from {self.previous_channel_index} to {self.current_channel_index}")
+            if self.channels[self.previous_channel_index]['url'].startswith('file'): # if previous channel is local
                 # TODO save position in .m3u8
-
-
-
+                print(self.current_filepath)
+                # trim .m3u8 at point that should be resumed for later
+                z = 0
 
         #print(f"Playing {self.channels[index]['name']} - {url}")
         self.gui_manager.show_loading()
