@@ -1,15 +1,12 @@
 from m3u8_handler import create_m3u8, trim_m3u8
 import mpv
 import config
-import random
-import os
 
 class IPTVPlayer:
     def __init__(self, channels, gui_manager):
         self.channels = channels
         self.gui_manager = gui_manager
         self.current_channel_index = None
-        self.previous_channel_index = None
         self.current_filepath = ""
         self.playback_time_printed = False
 
@@ -32,38 +29,38 @@ class IPTVPlayer:
             self.playback_time_printed = True
 
     def eof_replay(self, name, value):
+        if self.current_channel_index is None:
+            return
+
         playlist_pos = value
-        if playlist_pos == -1 and self.current_channel_index in (0, 1, 6): # if empty and on local channel
-            print(f"EMPTY LOCAL")
+        if playlist_pos == -1 and self.channels[self.current_channel_index]['url'].startswith('file'): # if local channel playlist is empty
+            # TODO re-create .m3u8
+            create_m3u8(config.CHANNEL_DIRECTORIES.get(self.current_channel_index))
+            self.play_channel(self.current_channel_index)
 
     def on_path_change(self, name, value):
         if name == 'path':
             self.current_filepath = value
 
-    def play_channel(self, index):
-        url = self.channels[index]['url']
+    def play_channel(self, channel_index):
+        url = self.channels[channel_index]['url']
         if not url.strip():
-            print(f"URL for {self.channels[index]['name']} is empty. Skipping.")
+            print(f"URL for {self.channels[channel_index]['name']} is empty. Skipping.")
             return
-
-        self.current_channel_index = index
-
-
+        
         # Resume local channel position
-        if url.startswith('file'):
-            # TODO resume playlist position in .m3u8
-            x = 0
+        #if url.startswith('file'):
+            # TODO resume from timestamp
 
         # Save local channel place in playlist
-        if self.previous_channel_index is not None:
-            print(f"Changed from {self.previous_channel_index} to {self.current_channel_index}")
-            if self.channels[self.previous_channel_index]['url'].startswith('file'): # if previous channel is local
-                print(self.current_filepath)
-                trim_m3u8("/home/melo/Videos/italian/videos.m3u8", self.current_filepath)
+        if self.current_channel_index is not None:
+            if self.channels[self.current_channel_index]['url'].startswith('file'): # if currently playing channel is local
+                directory = config.CHANNEL_DIRECTORIES.get(self.current_channel_index)
+                trim_m3u8(f"{directory}/playlist.m3u8", self.current_filepath)
 
-        #print(f"Playing {self.channels[index]['name']} - {url}")
         self.gui_manager.show_loading()
         self.playback_time_printed = False
         self.mpv.play(url)
-        self.previous_channel_index = self.current_channel_index
-        #print(f"Index: {self.current_channel_index}")
+        print(f"Changed from {self.current_channel_index} to {channel_index}")
+        self.current_channel_index = channel_index
+        
