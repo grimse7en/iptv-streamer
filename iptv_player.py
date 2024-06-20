@@ -31,22 +31,7 @@ class IPTVPlayer:
     def eof_replay(self, name, value):
         playlist_pos = value
         if playlist_pos == -1 and self.current_channel_index in (0, 1, 6): # if empty and on local channel
-            print(f"Populating playlist")
-            self.play_local_files(self.channels[self.current_channel_index].get('path', ''))
-
-    def play_local_files(self, path):
-        if path and os.path.isdir(path):
-            files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
-            random.shuffle(files)  # Shuffle the list of files
-            self.mpv.command('stop')  # Stop the current playback
-            self.mpv.playlist_clear()  # Clear the playlist before adding new items
-            for file in files:
-                file_path = os.path.join(path, file)
-                #print(f"Adding file to playlist: {file_path}")
-                self.mpv.playlist_append(file_path)  # Add each file to the playlist
-            self.mpv.playlist_pos = 0  # Set the playlist position to start playing from the first file
-        else:
-            print("Invalid path.")
+            print(f"EMPTY LOCAL")
 
     def play_channel(self, index):
         url = self.channels[index]['url']
@@ -56,16 +41,19 @@ class IPTVPlayer:
 
         self.current_channel_index = index
 
-        # Print channel change information
-        if self.previous_channel_index is not None:
-            print(f"Changed from {self.previous_channel_index} to {self.current_channel_index}")
-        
-        if url == 'local': # If local channel
-            self.play_local_files(self.channels[index].get('path', ''))
-            self.gui_manager.show_channel_info(index, self.channels[index].get('name', ''))
-            self.previous_channel_index = self.current_channel_index
-            #print(f"Index: {self.current_channel_index}")
-            return        
+
+        # Resume local channel position
+        #if url.startswith('file'):
+            # TODO resume playlist position in .m3u8
+
+        # Save local channel place in playlist
+        #if self.previous_channel_index is not None:
+            #print(f"Changed from {self.previous_channel_index} to {self.current_channel_index}")
+            #if self.channels[self.previous_channel_index]['url'].startswith('file'): # if previous channel is local
+                # TODO save position in .m3u8
+
+
+
 
         #print(f"Playing {self.channels[index]['name']} - {url}")
         self.gui_manager.show_loading()
