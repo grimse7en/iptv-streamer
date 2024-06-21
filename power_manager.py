@@ -25,9 +25,9 @@ class PowerManager:
             result = subprocess.run(['xrandr'], capture_output=True, text=True)
             output = result.stdout
             if "DP-2 connected " in output:
-                print("External monitor is turned on.")
+                print("External display is turned on.")
             else:
-                print("External monitor is turned off.")
+                print("External display is turned off.")
                 self.terminate_program()
         except Exception as e:
             print(f"Error checking monitor status: {e}")
