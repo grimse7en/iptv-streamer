@@ -13,6 +13,7 @@ INPUT_RESET_TIMEOUT = 3.0  # seconds
 DEFAULT_CHANNEL_INDEX = 2
 CHANNEL_INFO_FONT = ("Helvetica", 99, "bold")
 CHANNEL_INFO_DISPLAY_DURATION = 5000  # milliseconds
+MESSAGE_WINDOW_FONT = ("Helvetica", 66, "bold")
 LOCAL_CHANNEL_DIRECTORIES = {
     0: "/home/melo/Videos/italian"
 }

@@ -11,9 +11,11 @@ class GUIManager:
         self.number_window = None
         self.loading_window = None
         self.channel_info_window = None
+        self.message_window = None
         self.label = None
         self.loading_label = None
         self.channel_info_label = None
+        self.message_label = None
         self.loading_animations = config.LOADING_ANIMATIONS
         self.loading_index = 0
 
@@ -25,6 +27,7 @@ class GUIManager:
         self.setup_number_window()
         self.setup_loading_window()
         self.setup_channel_info_window()
+        self.setup_message_window()
         self.update_loading_animation()
 
     def setup_number_window(self):
@@ -77,6 +80,21 @@ class GUIManager:
         self.channel_info_label.pack(expand=True, padx=20, pady=15)
         self.channel_info_window.withdraw()
 
+    def setup_message_window(self):
+        """Sets up the message display window."""
+        self.message_window = tk.Toplevel(self.root)
+        self.message_window.attributes("-topmost", True)
+        self.message_window.overrideredirect(True)
+        self.message_window.configure(bg=config.BG_COLOR)
+
+        screen_width = self.loading_window.winfo_screenwidth()
+        screen_height = self.loading_window.winfo_screenheight()
+        self.message_window.geometry(f"+{screen_width//2 - 270}+{screen_height//2 + 100}")
+
+        self.message_label = tk.Label(self.message_window, text="", font=config.MESSAGE_WINDOW_FONT, fg=config.TEXT_COLOR, bg=config.BG_COLOR)
+        self.message_label.pack(expand=True, padx=20, pady=15)
+        self.message_window.withdraw()
+
     def update_loading_animation(self):
         """Updates the loading animation."""
         self.loading_label.config(text=self.loading_animations[self.loading_index])
@@ -113,6 +131,15 @@ class GUIManager:
     def update_number_window_label(self, text):
         """Updates the label in the number display window."""
         self.label.config(text=text)
+
+    def show_message_window(self, message):
+        """Shows the message window with the provided message."""
+        self.message_label.config(text=message)
+        self.message_window.deiconify()
+
+    def hide_message_window(self):
+        """Hides the message window."""
+        self.message_window.withdraw()
 
     def run(self):
         """Runs the Tkinter main loop."""

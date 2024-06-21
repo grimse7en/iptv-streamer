@@ -34,4 +34,4 @@ class PowerManager:
 
     def terminate_program(self):
         self.player.exit()
-        os.system("sudo systemctl suspend")
+        #os.system("sudo systemctl suspend")
