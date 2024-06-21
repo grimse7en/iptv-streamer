@@ -26,7 +26,7 @@ def main():
     player.play_channel(config.DEFAULT_CHANNEL_INDEX)
     input_manager = InputManager(player, gui_manager)
 
-    power_manager = PowerManager()
+    power_manager = PowerManager(player)
     power_manager.start_monitoring()
 
     print("Press keys 0-9 to switch channels. Press 'esc' to exit.")

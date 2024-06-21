@@ -64,20 +64,7 @@ class IPTVPlayer:
         # Save local channel place in playlist
         if self.current_channel_index is not None:
             if self.channels[self.current_channel_index]['url'].startswith('file'): # if currently playing channel is local
-                channel_directory = config.LOCAL_CHANNEL_DIRECTORIES.get(self.current_channel_index)
-                m3u8_path = f"{channel_directory}/playlist.m3u8"
-                if os.path.exists(m3u8_path) and m3u8_path != self.current_filepath:
-                    trim_m3u8(m3u8_path, self.current_filepath)
-
-                    # Get the current timestamp from mpv
-                    current_timestamp = int(self.mpv.time_pos)
-                    timestamp_filename = config.MPV_TIMESTAMP_FILENAME
-                    timestamp_filepath = os.path.join(channel_directory, timestamp_filename)
-
-                    # Save the timestamp to file
-                    with open(timestamp_filepath, 'w') as f:
-                        f.write(str(current_timestamp))
-                    print(f"Timestamp saved to {timestamp_filepath}")
+                self.save_local_channel_state()
 
         self.gui_manager.show_loading()
         self.is_loading = True
@@ -85,3 +72,21 @@ class IPTVPlayer:
         self.current_channel_index = channel_index
         self.mpv.play(url)
         
+    def save_local_channel_state(self):
+        channel_directory = config.LOCAL_CHANNEL_DIRECTORIES.get(self.current_channel_index)
+        m3u8_path = f"{channel_directory}/playlist.m3u8"
+        if os.path.exists(m3u8_path) and m3u8_path != self.current_filepath:
+            trim_m3u8(m3u8_path, self.current_filepath)
+
+            # Get the current timestamp from mpv
+            current_timestamp = int(self.mpv.time_pos)
+            timestamp_filename = config.MPV_TIMESTAMP_FILENAME
+            timestamp_filepath = os.path.join(channel_directory, timestamp_filename)
+
+            # Save the timestamp to file
+            with open(timestamp_filepath, 'w') as f:
+                f.write(str(current_timestamp))
+            print(f"Timestamp saved to {timestamp_filepath}")
+
+    def exit(self):
+        print("exitted")

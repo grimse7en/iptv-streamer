@@ -3,10 +3,11 @@ import threading
 import subprocess
 
 class PowerManager:
-    def __init__(self):
+    def __init__(self, player):
         self.context = pyudev.Context()
         self.monitor = pyudev.Monitor.from_netlink(self.context)
         self.monitor.filter_by(subsystem='drm')
+        self.player = player
 
     def start_monitoring(self):
         observer = threading.Thread(target=self._monitor_events, daemon=True)
@@ -25,5 +26,6 @@ class PowerManager:
                 print("External monitor is turned on.")
             else:
                 print("External monitor is turned off.")
+                self.player.exit()
         except Exception as e:
             print(f"Error checking monitor status: {e}")
