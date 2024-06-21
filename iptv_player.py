@@ -89,4 +89,11 @@ class IPTVPlayer:
             print(f"Timestamp saved to {timestamp_filepath}")
 
     def exit(self):
-        print("exitted")
+        if self.current_channel_index is not None:
+            if self.channels[self.current_channel_index]['url'].startswith('file'): # if currently playing channel is local
+                self.save_local_channel_state()
+        try:
+            self.mpv.stop(False)
+        except Exception as e:
+            print(f"Error while quitting MPV: {e}")
+        print("Exited")

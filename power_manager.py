@@ -1,3 +1,5 @@
+import os
+import sys
 import pyudev
 import threading
 import subprocess
@@ -26,6 +28,10 @@ class PowerManager:
                 print("External monitor is turned on.")
             else:
                 print("External monitor is turned off.")
-                self.player.exit()
+                self.terminate_program()
         except Exception as e:
             print(f"Error checking monitor status: {e}")
+
+    def terminate_program(self):
+        self.player.exit()
+        os.system("sudo systemctl suspend")
