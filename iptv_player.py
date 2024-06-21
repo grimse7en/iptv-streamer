@@ -82,6 +82,7 @@ class IPTVPlayer:
 
         self.gui_manager.show_loading()
         self.is_loading = True
+        print(f"Changed from {self.current_channel_index} to {channel_index}")
         self.current_channel_index = channel_index
         self.mpv.play(url)
-        print(f"Changed from {self.current_channel_index} to {channel_index}")
+        
