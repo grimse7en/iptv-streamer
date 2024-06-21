@@ -32,7 +32,6 @@ class IPTVPlayer:
             # seek to timestamp if local channel
             channel_directory = config.LOCAL_CHANNEL_DIRECTORIES.get(self.current_channel_index)
             if channel_directory is not None:
-                print("LOCAL FILE LOADED, READY TO SEEK!")
                 timestamp_filepath = os.path.join(channel_directory, config.MPV_TIMESTAMP_FILENAME)
                 if os.path.exists(timestamp_filepath):
                     with open(timestamp_filepath, 'r') as f:
@@ -40,6 +39,7 @@ class IPTVPlayer:
                     if(saved_timestamp != 0):
                         self.mpv.seek(saved_timestamp, 'absolute')
                         print(f"Seeked to saved timestamp: {saved_timestamp} seconds")
+                        os.remove(timestamp_filepath)
 
     def eof_replay(self, name, value):
         if self.current_channel_index is None:

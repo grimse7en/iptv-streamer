@@ -19,8 +19,6 @@ def main():
     channels = load_channels('channels.json')
     if not channels:
         return
-    
-    # TODO check if internet connection established
 
     gui_manager = GUIManager()
     player = IPTVPlayer(channels, gui_manager)
