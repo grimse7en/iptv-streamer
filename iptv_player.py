@@ -9,7 +9,7 @@ class IPTVPlayer:
         self.gui_manager = gui_manager
         self.current_channel_index = None
         self.current_filepath = ""
-        self.playback_time_printed = False
+        self.is_loading = False
 
         self.mpv = mpv.MPV(
             ytdl=True,
@@ -23,11 +23,23 @@ class IPTVPlayer:
         self.mpv.observe_property('path', self.on_path_change)
 
     def handle_playback_time(self, name, value):
-        if value is not None and value > 0.0 and not self.playback_time_printed:
+        if value is not None and value > 0.0 and self.is_loading:
             #print(f"Playback time: {value}")
             self.gui_manager.hide_loading()
             self.gui_manager.show_channel_info(self.current_channel_index, self.channels[self.current_channel_index]['name'])
-            self.playback_time_printed = True
+            self.is_loading = False
+
+            # seek to timestamp if local channel
+            channel_directory = config.LOCAL_CHANNEL_DIRECTORIES.get(self.current_channel_index)
+            if channel_directory is not None:
+                print("LOCAL FILE LOADED, READY TO SEEK!")
+                timestamp_filepath = os.path.join(channel_directory, config.MPV_TIMESTAMP_FILENAME)
+                if os.path.exists(timestamp_filepath):
+                    with open(timestamp_filepath, 'r') as f:
+                        saved_timestamp = int(f.read().strip())
+                    if(saved_timestamp != 0):
+                        self.mpv.seek(saved_timestamp, 'absolute')
+                        print(f"Seeked to saved timestamp: {saved_timestamp} seconds")
 
     def eof_replay(self, name, value):
         if self.current_channel_index is None:
@@ -35,14 +47,12 @@ class IPTVPlayer:
 
         playlist_pos = value
         if playlist_pos == -1 and self.channels[self.current_channel_index]['url'].startswith('file'): # if local channel playlist is empty
-            # TODO re-create .m3u8
-            m3u8_path = create_m3u8(config.CHANNEL_DIRECTORIES.get(self.current_channel_index))
+            m3u8_path = create_m3u8(config.LOCAL_CHANNEL_DIRECTORIES.get(self.current_channel_index))
             self.current_filepath = m3u8_path
             self.play_channel(self.current_channel_index)
 
     def on_path_change(self, name, value):
-        print("PATH CHANGE!")
-        if name == 'path':
+        if name == 'path' and value is not None:
             self.current_filepath = value
 
     def play_channel(self, channel_index):
@@ -54,12 +64,11 @@ class IPTVPlayer:
         # Save local channel place in playlist
         if self.current_channel_index is not None:
             if self.channels[self.current_channel_index]['url'].startswith('file'): # if currently playing channel is local
-                channel_directory = config.CHANNEL_DIRECTORIES.get(self.current_channel_index)
+                channel_directory = config.LOCAL_CHANNEL_DIRECTORIES.get(self.current_channel_index)
                 m3u8_path = f"{channel_directory}/playlist.m3u8"
                 if os.path.exists(m3u8_path) and m3u8_path != self.current_filepath:
                     trim_m3u8(m3u8_path, self.current_filepath)
                     print("TRIMMED")
-                    # TODO save timestamp as filename "mpvtimestamp-{timestamp}" and truncate the timestamp float as an integer
 
                     # Get the current timestamp from mpv
                     current_timestamp = int(self.mpv.time_pos)
@@ -72,7 +81,7 @@ class IPTVPlayer:
                     print(f"Timestamp saved to {timestamp_filepath}")
 
         self.gui_manager.show_loading()
-        self.playback_time_printed = False
+        self.is_loading = True
+        self.current_channel_index = channel_index
         self.mpv.play(url)
         print(f"Changed from {self.current_channel_index} to {channel_index}")
-        self.current_channel_index = channel_index
