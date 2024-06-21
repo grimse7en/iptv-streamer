@@ -2,6 +2,7 @@ import json
 from iptv_player import IPTVPlayer
 from gui_manager import GUIManager
 from input_manager import InputManager
+from power_manager import PowerManager
 import config
 
 def load_channels(file_path):
@@ -24,6 +25,9 @@ def main():
     player = IPTVPlayer(channels, gui_manager)
     player.play_channel(config.DEFAULT_CHANNEL_INDEX)
     input_manager = InputManager(player, gui_manager)
+
+    power_manager = PowerManager()
+    power_manager.start_monitoring()
 
     print("Press keys 0-9 to switch channels. Press 'esc' to exit.")
     gui_manager.run()

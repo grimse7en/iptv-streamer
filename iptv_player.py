@@ -68,7 +68,6 @@ class IPTVPlayer:
                 m3u8_path = f"{channel_directory}/playlist.m3u8"
                 if os.path.exists(m3u8_path) and m3u8_path != self.current_filepath:
                     trim_m3u8(m3u8_path, self.current_filepath)
-                    print("TRIMMED")
 
                     # Get the current timestamp from mpv
                     current_timestamp = int(self.mpv.time_pos)
