@@ -1,6 +1,7 @@
 evdev==1.7.1
 m3u8==5.0.0
 mpv==1.0.6
+pillow==10.3.0
 pynput==1.7.7
 python-xlib==0.33
 pyudev==0.24.3
