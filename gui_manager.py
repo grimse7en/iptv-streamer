@@ -117,8 +117,8 @@ class GUIManager:
         rows = (num_items // columns) + (1 if num_items % columns != 0 else 0)
 
         # Define maximum size for the images
-        max_width = 500
-        max_height = 500
+        max_width = 600
+        max_height = 600
 
         # Set the fixed size for each grid cell
         cell_width = 600
@@ -147,18 +147,18 @@ class GUIManager:
                     else:
                         img = None  # Placeholder for no image
 
-                    # Display the index
+                    # Display the index in the middle of the height
                     index_label = tk.Label(frame, text=f"{item['index']}", font=config.GRID_FONT, fg=config.TEXT_COLOR, bg=bg_color)
-                    index_label.grid(row=0, column=0, sticky="nw")
+                    index_label.place(relx=0.05, rely=0.5, anchor="w")  # Center vertically, left align horizontally
 
                     # Display the image
                     if img:
                         image_label = tk.Label(frame, image=img, bg=bg_color)
                         image_label.image = img  # Keep a reference to avoid garbage collection
-                        image_label.grid(row=0, column=1, rowspan=2, padx=0)
+                        image_label.place(relx=0.6, rely=0.5, anchor="center")  # Center the image in the frame
                     else:
                         image_label = tk.Label(frame, text="", bg=bg_color)
-                        image_label.grid(row=0, column=1, rowspan=2, padx=0)
+                        image_label.place(relx=0.6, rely=0.5, anchor="center")  # Center the placeholder label
 
                     # Display the name
                     #name_label = tk.Label(frame, text=item['name'], font=config.GRID_FONT, fg=config.TEXT_COLOR, bg=bg_color)
