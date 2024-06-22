@@ -100,6 +100,7 @@ class IPTVPlayer:
             self.current_filepath = ""
             self.is_loading = False
             self.is_stopped = False
+            self.gui_manager.hide_loading()
             print("Exited")
         except Exception as e:
             print(f"Error while quitting MPV: {e}")
