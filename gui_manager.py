@@ -1,5 +1,8 @@
 import tkinter as tk
+from tkinter import PhotoImage
+from PIL import Image, ImageTk
 import config
+import os
 
 class GUIManager:
     def __init__(self):
@@ -12,6 +15,7 @@ class GUIManager:
         self.loading_window = None
         self.channel_info_window = None
         self.message_window = None
+        self.fullscreen_window = None
         self.label = None
         self.loading_label = None
         self.channel_info_label = None
@@ -94,6 +98,81 @@ class GUIManager:
         self.message_label = tk.Label(self.message_window, text="", font=config.MESSAGE_WINDOW_FONT, fg=config.TEXT_COLOR, bg=config.BG_COLOR)
         self.message_label.pack(expand=True, padx=20, pady=15)
         self.message_window.withdraw()
+
+    def setup_fullscreen_window(self, items):
+        """Sets up the fullscreen window with a grid layout based on the items."""
+        self.fullscreen_window = tk.Toplevel(self.root)
+        self.fullscreen_window.attributes("-fullscreen", True)
+        self.fullscreen_window.config(bg=config.GRID_BG_COLOR)
+
+        # Hide the cursor
+        self.fullscreen_window.config(cursor="none")
+
+        # Filter out the item with index 0
+        items = [item for item in items if item['index'] != 0]
+
+        # Calculate the number of rows and columns needed
+        num_items = len(items)
+        columns = int(num_items**0.5)
+        rows = (num_items // columns) + (1 if num_items % columns != 0 else 0)
+
+        # Define maximum size for the images
+        max_width = 500
+        max_height = 500
+
+        # Set the fixed size for each grid cell
+        cell_width = 600
+        cell_height = 600
+
+        # Create a grid layout
+        for r in range(rows):
+            self.fullscreen_window.grid_rowconfigure(r, weight=1)
+            for c in range(columns):
+                self.fullscreen_window.grid_columnconfigure(c, weight=1)
+                index = r * columns + c
+                if index < num_items:
+                    item = items[index]
+                    # Use the item's color or default to GRID_BG_COLOR if not specified
+                    bg_color = item.get('colour', config.GRID_BG_COLOR)
+                    frame = tk.Frame(self.fullscreen_window, width=cell_width, height=cell_height, bg=bg_color, bd=2, relief="solid")
+                    frame.grid(row=r, column=c, sticky="nsew", padx=11, pady=11)
+                    frame.grid_propagate(False)  # Prevent frame from resizing to fit content
+
+                    # Load and resize the image while maintaining aspect ratio
+                    img_path = os.path.join("img", f"{item['index']}.png")
+                    if os.path.exists(img_path):
+                        img = Image.open(img_path)
+                        img.thumbnail((max_width, max_height), Image.LANCZOS)
+                        img = ImageTk.PhotoImage(img)
+                    else:
+                        img = None  # Placeholder for no image
+
+                    # Display the index
+                    index_label = tk.Label(frame, text=f"{item['index']}", font=config.GRID_FONT, fg=config.TEXT_COLOR, bg=bg_color)
+                    index_label.grid(row=0, column=0, sticky="nw")
+
+                    # Display the image
+                    if img:
+                        image_label = tk.Label(frame, image=img, bg=bg_color)
+                        image_label.image = img  # Keep a reference to avoid garbage collection
+                        image_label.grid(row=0, column=1, rowspan=2, padx=0)
+                    else:
+                        image_label = tk.Label(frame, text="", bg=bg_color)
+                        image_label.grid(row=0, column=1, rowspan=2, padx=0)
+
+                    # Display the name
+                    #name_label = tk.Label(frame, text=item['name'], font=config.GRID_FONT, fg=config.TEXT_COLOR, bg=bg_color)
+                    #name_label.grid(row=1, column=1, sticky="nw")
+
+        self.fullscreen_window.withdraw()
+
+    def show_fullscreen_window(self):
+        """Shows the fullscreen window with the provided items."""
+        self.fullscreen_window.deiconify()
+
+    def hide_fullscreen_window(self):
+        """Hides the fullscreen window."""
+        self.fullscreen_window.withdraw()
 
     def update_loading_animation(self):
         """Updates the loading animation."""

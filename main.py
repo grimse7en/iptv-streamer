@@ -35,7 +35,7 @@ def check_internet_and_start_player(gui_manager, player):
         print("Ready for input.")
         gui_manager.hide_loading()
         gui_manager.hide_message_window()
-        player.play_channel(config.DEFAULT_CHANNEL_INDEX)
+        #player.play_channel(config.DEFAULT_CHANNEL_INDEX)
     else:
         print("Waiting for internet connection...")
         gui_manager.show_loading()
@@ -54,8 +54,9 @@ def main():
     #power_manager = PowerManager(player)
     #power_manager.start_monitoring()
 
+    gui_manager.setup_fullscreen_window(channels)
+    gui_manager.show_fullscreen_window()
     gui_manager.root.after(1000, check_internet_and_start_player, gui_manager, player)
-
     gui_manager.run()
 
 if __name__ == "__main__":

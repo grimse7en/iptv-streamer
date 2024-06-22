@@ -15,7 +15,13 @@ CHANNEL_INFO_FONT = ("Helvetica", 77, "bold")
 CHANNEL_INFO_DISPLAY_DURATION = 5000  # milliseconds
 MESSAGE_WINDOW_FONT = ("Helvetica", 66, "bold")
 LOCAL_CHANNEL_DIRECTORIES = {
-    0: "/home/melo/Videos/italian",
-    1: "/home/melo/Videos/a-casa-vostra/"
+    1: "/home/melo/Videos/italian",
+    6: "/home/melo/Videos/a-casa-vostra/",
+    7: "/home/melo/Videos/chiama-in-diretta/"
 }
 MPV_TIMESTAMP_FILENAME = "mpv-timestamp.txt"
+
+# Grid settings for the fullscreen window
+GRID_FONT = ("Helvetica", 200)  # Adjust as needed
+GRID_BG_COLOR = "#454545"  # Background color
+TEXT_COLOR = "#FFFFFF"  # Text color
