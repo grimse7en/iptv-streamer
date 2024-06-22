@@ -48,7 +48,5 @@ class InputManager:
 
     def on_exit_key_press(self, key):
         if key == keyboard.Key.esc:
-            self.listener.stop()
-            self.exit_listener.stop()
-            self.gui_manager.root.quit()
-            return False
+            self.player.exit()
+

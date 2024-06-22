@@ -51,8 +51,8 @@ def main():
     player = IPTVPlayer(channels, gui_manager)
     input_manager = InputManager(player, gui_manager)
 
-    power_manager = PowerManager(player)
-    power_manager.start_monitoring()
+    #power_manager = PowerManager(player)
+    #power_manager.start_monitoring()
 
     gui_manager.root.after(1000, check_internet_and_start_player, gui_manager, player)
 
