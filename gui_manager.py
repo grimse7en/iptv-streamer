@@ -151,13 +151,13 @@ class GUIManager:
                     index_label = tk.Label(frame, text=f"{item['index']}", font=config.GRID_FONT, fg=config.TEXT_COLOR, bg=bg_color)
                     index_label.place(relx=0.05, rely=0.5, anchor="w")  # Center vertically, left align horizontally
 
-                    # Display the image
+                    # Display the image, display text if no image present
                     if img:
                         image_label = tk.Label(frame, image=img, bg=bg_color)
                         image_label.image = img  # Keep a reference to avoid garbage collection
                         image_label.place(relx=0.6, rely=0.5, anchor="center")  # Center the image in the frame
                     else:
-                        image_label = tk.Label(frame, text="", bg=bg_color)
+                        image_label = tk.Label(frame, text=item['name'], bg=bg_color, font=config.GRID_IMAGE_LABEL_FONT)
                         image_label.place(relx=0.6, rely=0.5, anchor="center")  # Center the placeholder label
 
                     # Display the name

@@ -22,6 +22,6 @@ LOCAL_CHANNEL_DIRECTORIES = {
 MPV_TIMESTAMP_FILENAME = "mpv-timestamp.txt"
 
 # Grid settings for the fullscreen window
-GRID_FONT = ("Helvetica", 170)  # Adjust as needed
-GRID_BG_COLOR = "#454545"  # Background color
-TEXT_COLOR = "#FFFFFF"  # Text color
+GRID_FONT = ("Helvetica", 170, "bold")  # Adjust as needed
+GRID_BG_COLOR = "#454545",  # Background color
+GRID_IMAGE_LABEL_FONT = ("Helvetica", 40, "bold")
