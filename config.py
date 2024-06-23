@@ -16,7 +16,6 @@ CHANNEL_INFO_FONT = ("Helvetica", 77, "bold")
 CHANNEL_INFO_DISPLAY_DURATION = 5000  # milliseconds
 MESSAGE_WINDOW_FONT = ("Helvetica", 66, "bold")
 LOCAL_CHANNEL_DIRECTORIES = {
-    1: "/home/melo/Videos/italian",
     4: "/home/melo/Videos/marcellino",
     6: "/home/melo/Videos/a-casa-vostra/"
 }
