@@ -33,13 +33,13 @@ def check_internet_and_start_player(gui_manager, player):
     if is_connected_to_internet():
         print("Internet connection established.")
         print("Ready for input.")
-        gui_manager.hide_loading()
-        gui_manager.hide_message_window()
+        #gui_manager.hide_loading()
+        #gui_manager.hide_message_window()
         #player.play_channel(config.DEFAULT_CHANNEL_INDEX)
     else:
         print("Waiting for internet connection...")
-        gui_manager.show_loading()
-        gui_manager.show_message_window("Please wait")
+        #gui_manager.show_loading()
+        #gui_manager.show_message_window("Please wait")
         gui_manager.root.after(1000, check_internet_and_start_player, gui_manager, player)
 
 def main():
