@@ -39,6 +39,7 @@ class GUIManager:
         self.number_window = tk.Toplevel(self.root)
         self.number_window.attributes("-topmost", True)
         self.number_window.overrideredirect(True)
+        self.number_window.config(cursor="none")
 
         screen_width = self.number_window.winfo_screenwidth()
         screen_height = self.number_window.winfo_screenheight()
@@ -58,6 +59,7 @@ class GUIManager:
         self.loading_window = tk.Toplevel(self.root)
         self.loading_window.attributes("-topmost", True)
         self.loading_window.overrideredirect(True)
+        self.loading_window.config(cursor="none")
 
         screen_width = self.loading_window.winfo_screenwidth()
         screen_height = self.loading_window.winfo_screenheight()
@@ -73,6 +75,7 @@ class GUIManager:
         self.channel_info_window.attributes("-topmost", True)
         self.channel_info_window.overrideredirect(True)
         self.channel_info_window.configure(bg=config.BG_COLOR)
+        self.channel_info_window.config(cursor="none")
 
         screen_width = self.channel_info_window.winfo_screenwidth()
         screen_height = self.channel_info_window.winfo_screenheight()
@@ -90,6 +93,7 @@ class GUIManager:
         self.message_window.attributes("-topmost", True)
         self.message_window.overrideredirect(True)
         self.message_window.configure(bg=config.BG_COLOR)
+        self.message_window.config(cursor="none")
 
         screen_width = self.loading_window.winfo_screenwidth()
         screen_height = self.loading_window.winfo_screenheight()
