@@ -49,6 +49,6 @@ class InputManager:
             pass
 
     def on_exit_key_press(self, key):
-        if key == keyboard.Key.esc:
+        if key == keyboard.Key.esc or key == keyboard.Key.home:
             self.player.exit()
             self.gui_manager.hide_channel_info()

@@ -7,7 +7,7 @@
     {"index": 4, "name": "Marcellino Pane e Vino", "colour": "#f25c54", "url": "file:///home/melo/Videos/marcellino/playlist.m3u8"},
     {"index": 5, "name": "Super!", "colour": "#c9184a", "url": "https://vimnitaly.akamaized.net/hls/live/2094034/super/master-2500.m3u8"},
     {"index": 6, "name": "A Casa Vostra", "colour": "#008dcc", "url": "file:///home/melo/Videos/a-casa-vostra/playlist.m3u8"},
-    {"index": 7, "name": "A Casa Vostra 2", "colour": "#52b69a", "url": "file:///home/melo/Videos/chiama-in-diretta/playlist.m3u8"},
+    {"index": 7, "name": "CHANNEL", "colour": "#52b69a", "url": "https://live.mariatvcdn.com/mariatvcdn/70564e1c6884c007c76f0c128d679eed.sdp/mono.m3u8"},
     {"index": 8, "name": "EntellaTV", "colour": "#ff758f", "url": "https://5f22d76e220e1.streamlock.net/EntellaTV/EntellaTV/playlist.m3u8"},
     {"index": 9, "name": "Cusano Italia TV", "colour": "#ff4d6d", "url": "https://stream9.xdevel.com/video0s975363-69/stream/playlist.m3u8"},
     {"index": 10, "name": "Video Calabria", "colour": "#00b1c6", "url": "https://streamcdne1-a8a02dd9a49a4fc9810743615c65ab73.msvdn.net/live/S76734991/i6NeNqLYaspb/playlist.m3u8"},

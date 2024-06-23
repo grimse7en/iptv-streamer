@@ -18,8 +18,7 @@ MESSAGE_WINDOW_FONT = ("Helvetica", 66, "bold")
 LOCAL_CHANNEL_DIRECTORIES = {
     1: "/home/melo/Videos/italian",
     4: "/home/melo/Videos/marcellino",
-    6: "/home/melo/Videos/a-casa-vostra/",
-    7: "/home/melo/Videos/chiama-in-diretta/"
+    6: "/home/melo/Videos/a-casa-vostra/"
 }
 MPV_TIMESTAMP_FILENAME = "mpv-timestamp.txt"
 
