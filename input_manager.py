@@ -23,7 +23,6 @@ class InputManager:
                     print(f"Key {index} pressed")
                     self.gui_manager.update_number_window_label(self.input_buffer)
                     self.player.play_channel(index)
-                    #self.player.current_channel_index = index
             except ValueError:
                 print("Invalid input buffer")
         self.input_buffer = ""
@@ -41,7 +40,10 @@ class InputManager:
                     self.input_buffer += key.char
                     self.gui_manager.update_number_window_label(self.input_buffer)
                     self.gui_manager.show_number_window()
-                    self.timer = Timer(config.INPUT_RESET_TIMEOUT, self.reset_input_buffer)
+                    if self.input_buffer == "1":
+                        self.timer = Timer(config.INPUT_RESET_TIMEOUT_FULL, self.reset_input_buffer)
+                    else:
+                        self.timer = Timer(config.INPUT_RESET_TIMEOUT_SHORT, self.reset_input_buffer)
                     self.timer.start()
         except AttributeError:
             pass
