@@ -26,3 +26,5 @@ MPV_TIMESTAMP_FILENAME = "mpv-timestamp.txt"
 GRID_FONT = ("Helvetica", 170, "bold")  # Adjust as needed
 GRID_BG_COLOR = "#454545",  # Background color
 GRID_IMAGE_LABEL_FONT = ("Helvetica", 40, "bold")
+
+SUSPEND_TIMEOUT = 300  # seconds

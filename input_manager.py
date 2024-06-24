@@ -1,5 +1,6 @@
 from pynput import keyboard
 from threading import Timer
+from power_manager import suspend_system
 import config
 
 class InputManager:
@@ -8,12 +9,26 @@ class InputManager:
         self.gui_manager = gui_manager
         self.input_buffer = ""
         self.timer = None
+        self.inactivity_timer = None
 
         self.listener = keyboard.Listener(on_press=self.on_key_press)
         self.listener.start()
 
         self.exit_listener = keyboard.Listener(on_press=self.on_exit_key_press)
         self.exit_listener.start()
+
+        self.start_inactivity_timer()
+
+    def start_inactivity_timer(self):
+        if self.inactivity_timer:
+            self.inactivity_timer.cancel()
+        self.inactivity_timer = Timer(config.SUSPEND_TIMEOUT, self.handle_inactivity)
+        self.inactivity_timer.start()
+
+    def handle_inactivity(self):
+        if self.player.is_exited:
+            print(f"Inactive for {config.SUSPEND_TIMEOUT} seconds, suspending system.")
+            suspend_system()
 
     def reset_input_buffer(self):
         if self.input_buffer:
@@ -32,17 +47,19 @@ class InputManager:
         self.gui_manager.hide_number_window()
 
     def on_key_press(self, key):
+        self.start_inactivity_timer()  # Reset inactivity timer on key press
+
         try:
             if key.char.isdigit():
                 if len(self.input_buffer) < config.INPUT_BUFFER_MAX_LENGTH:
                     if self.timer:
                         self.timer.cancel()
                     self.input_buffer += key.char
-                    if int(self.input_buffer) <= (len(self.player.channels)-1): # if input_buffer exists as a channel number
+                    if int(self.input_buffer) <= (len(self.player.channels) - 1):  # if input_buffer exists as a channel number
                         self.gui_manager.update_number_window_label(self.input_buffer)
                         self.gui_manager.show_number_window()
                     elif len(self.input_buffer) > 1:
-                        self.input_buffer = self.input_buffer[:-1] # truncate input_buffer if the two-digit input doesn't exist as a channel
+                        self.input_buffer = self.input_buffer[:-1]  # truncate input_buffer if the two-digit input doesn't exist as a channel
                     if self.input_buffer == "1":
                         self.timer = Timer(config.INPUT_RESET_TIMEOUT_FULL, self.reset_input_buffer)
                     else:

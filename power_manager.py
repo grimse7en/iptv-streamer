@@ -1,6 +1,6 @@
 import subprocess
 
-def suspend_system(self):
+def suspend_system():
     try:
         # Use systemctl to suspend the system
         subprocess.run(['systemctl', 'suspend'], check=True)

@@ -28,5 +28,7 @@ def main():
     gui_manager.show_fullscreen_window()
     gui_manager.run()
 
+    x = 0
+
 if __name__ == "__main__":
     main()

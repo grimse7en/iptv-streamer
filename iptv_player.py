@@ -10,7 +10,7 @@ class IPTVPlayer:
         self.current_channel_index = None
         self.current_filepath = ""
         self.is_loading = False
-        self.is_stopped = False
+        self.is_exited = False
 
         self.mpv = mpv.MPV(
             ytdl=True,
@@ -43,7 +43,7 @@ class IPTVPlayer:
                         os.remove(timestamp_filepath)
 
     def eof_replay(self, name, value):
-        if self.current_channel_index is None or self.is_stopped:
+        if self.current_channel_index is None or self.is_exited:
             return
 
         playlist_pos = value
@@ -70,7 +70,7 @@ class IPTVPlayer:
 
         self.gui_manager.show_loading()
         self.is_loading = True
-        self.is_stopped = False
+        self.is_exited = False
         print(f"Changed from {self.current_channel_index} to {channel_index}")
         self.current_channel_index = channel_index
         self.mpv.play(url)
@@ -101,9 +101,8 @@ class IPTVPlayer:
             self.current_channel_index = None
             self.current_filepath = ""
             self.is_loading = False
-            self.is_stopped = False
+            self.is_exited = True
             self.gui_manager.hide_loading()
             print("Exited")
         except Exception as e:
             print(f"Error while quitting MPV: {e}")
-        
