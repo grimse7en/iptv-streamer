@@ -5,7 +5,7 @@ import random
 def create_m3u8(videos_directory):
     # List all video files in the directory with specified extensions
     video_files = [f for f in os.listdir(videos_directory) 
-                   if f.endswith(('.mkv', '.mp4', '.webm')) 
+                   if f.endswith(('.mkv', '.mp4', '.webm', '.mov', '.avi')) 
                    and os.path.isfile(os.path.join(videos_directory, f))]
     
     # Randomize the order of the video files

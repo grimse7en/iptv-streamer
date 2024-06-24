@@ -3,8 +3,6 @@ import subprocess
 from iptv_player import IPTVPlayer
 from gui_manager import GUIManager
 from input_manager import InputManager
-from power_manager import PowerManager
-import config
 
 def load_channels(file_path):
     try:
