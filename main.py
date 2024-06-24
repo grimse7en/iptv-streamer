@@ -56,7 +56,7 @@ def main():
 
     gui_manager.setup_fullscreen_window(channels)
     gui_manager.show_fullscreen_window()
-    gui_manager.root.after(1000, check_internet_and_start_player, gui_manager, player)
+    #gui_manager.root.after(1000, check_internet_and_start_player, gui_manager, player)
     gui_manager.run()
 
 if __name__ == "__main__":

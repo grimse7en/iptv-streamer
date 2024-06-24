@@ -38,8 +38,11 @@ class InputManager:
                     if self.timer:
                         self.timer.cancel()
                     self.input_buffer += key.char
-                    self.gui_manager.update_number_window_label(self.input_buffer)
-                    self.gui_manager.show_number_window()
+                    if int(self.input_buffer) <= (len(self.player.channels)-1): # if input_buffer exists as a channel number
+                        self.gui_manager.update_number_window_label(self.input_buffer)
+                        self.gui_manager.show_number_window()
+                    elif len(self.input_buffer) > 1:
+                        self.input_buffer = self.input_buffer[:-1] # truncate input_buffer if the two-digit input doesn't exist as a channel
                     if self.input_buffer == "1":
                         self.timer = Timer(config.INPUT_RESET_TIMEOUT_FULL, self.reset_input_buffer)
                     else:
@@ -49,6 +52,9 @@ class InputManager:
             pass
 
     def on_exit_key_press(self, key):
-        if key == keyboard.Key.esc or key == keyboard.Key.home:
+        if key == keyboard.Key.esc or key == keyboard.Key.home or key == keyboard.Key.enter:
             self.player.exit()
             self.gui_manager.hide_channel_info()
+            self.gui_manager.hide_loading()
+            self.gui_manager.hide_number_window()
+            self.gui_manager.hide_message_window()
