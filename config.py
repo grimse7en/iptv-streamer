@@ -16,8 +16,9 @@ CHANNEL_INFO_FONT = ("Helvetica", 77, "bold")
 CHANNEL_INFO_DISPLAY_DURATION = 5000  # milliseconds
 MESSAGE_WINDOW_FONT = ("Helvetica", 66, "bold")
 LOCAL_CHANNEL_DIRECTORIES = {
+    1: "/home/tv/Videos/canzoni-tv",
     4: "/home/tv/Videos/marcellino",
-    6: "/home/tv/Videos/a-casa-vostra/"
+    6: "/home/tv/Videos/a-casa-vostra"
 }
 MPV_TIMESTAMP_FILENAME = "mpv-timestamp.txt"
 
